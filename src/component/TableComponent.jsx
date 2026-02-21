@@ -4,12 +4,12 @@ import Swal from 'sweetalert2'
 import axios from 'axios'
 
 export const TableComponent = ({ jobs }) => {
-    const BASE_URL = 'https://botfilter-h5ddh6dye8exb7ha.centralus-01.azurewebsites.net'
-    const ENDPOINT = BASE_URL + '/api/candidate/apply-to-job'
+    const BASE_URL = import.meta.env.VITE_BASE_URL
+    const ENDPOINT = BASE_URL + import.meta.env.VITE_APPLY_ENDPOINT
     const {startLoading, stopLoading} = useContext(LoadingContext)
-    const myUuid = 'f5707469-ea8d-45de-9e86-143c47cb9d6f'
-    const myCandidateId = '74114322005'
-    const myAplicationId = '77820939005'
+    const myUuid = import.meta.env.VITE_UUID
+    const myCandidateId = import.meta.env.VITE_CANDIDATE_ID
+    const myAplicationId = import.meta.env.VITE_APPLICATION_ID
     const [repoInputs, setRepoInputs] = useState({})
 
     const handleSubmit = async (job) => {
