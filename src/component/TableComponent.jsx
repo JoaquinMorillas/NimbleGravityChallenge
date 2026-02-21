@@ -1,0 +1,97 @@
+import React, { useContext, useState } from 'react'
+import { LoadingContext } from '../context/LoadingContext'
+import Swal from 'sweetalert2'
+import axios from 'axios'
+
+export const TableComponent = ({ jobs }) => {
+    const BASE_URL = 'https://botfilter-h5ddh6dye8exb7ha.centralus-01.azurewebsites.net'
+    const ENDPOINT = BASE_URL + '/api/candidate/apply-to-job'
+    const {startLoading, stopLoading} = useContext(LoadingContext)
+    const myUuid = 'f5707469-ea8d-45de-9e86-143c47cb9d6f'
+    const myCandidateId = '74114322005'
+    const [repoInputs, setRepoInputs] = useState({})
+
+    const handleSubmit = async (job) => {
+        if(!repoInputs[job.id]){
+            Swal.fire({
+                title: "Error",
+                text: "El campo de Url es obligatorio",
+                icon: "error"
+            })
+            return
+        }
+        const jsonRequest = {
+            "uuid": myUuid,
+            "jobId": job.id,
+            "candidateId": myCandidateId,
+            "repoUrl": repoInputs[job.id]
+        }
+
+        try{
+            startLoading()
+            const request = await axios.post(ENDPOINT, {jsonRequest})
+            if(request.status == 200){
+                Swal.fire({
+                    title:"Exito",
+                    text:"¡Su aplicacion ha sido enviada!",
+                    icon:"success"
+                })
+            }
+        }catch(error){
+             if (error.response?.status === 400) {
+                Swal.fire("Error", "Datos inválidos", "error");
+            } else if (error.response?.status === 404) {
+                Swal.fire("Error", "Job no encontrado", "error");
+            } else {
+                Swal.fire("Error", "Error del servidor", "error");
+            }
+        }finally{
+            stopLoading()
+        }
+    }
+  return (
+    <>  
+        <div style={{maxWidth:'80%',margin:'auto'}}>
+            <div className='d-flex justify-content-center'>
+
+                <table className='table table-striped table-hover'>
+                    <thead>
+                        <tr>
+                        <th scope="col" className='text-center'>Título</th>
+                        <th scope="col" className='text-center'>Url del repositorio</th>
+                        <th scope="col" className='text-center'>Postulación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {jobs.map(job => (
+                                <tr key={job.id}>
+                                    <td className='text-center'>{job.title}</td>
+                                    <td className='text-center'>
+                                        <input type="text" 
+                                        placeholder='Tu Repositorio de Github'
+                                        value={repoInputs[job.id] || ""}
+                                        onChange={(e) => 
+                                            setRepoInputs(prev => ({
+                                                ...prev,
+                                                [job.id]: e.target.value
+                                            }))
+                                        }
+                                        />
+                                    </td>
+                                    <td className='text-center'>
+                                        <button className='btn btn-primary'
+                                        onClick={() => handleSubmit(job)}>
+                                            Postularse
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                        }
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </>
+  )
+}
