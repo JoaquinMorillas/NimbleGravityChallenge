@@ -5,8 +5,8 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 
 export const HomePage = () => {
-    const BASE_URL = 'https://botfilter-h5ddh6dye8exb7ha.centralus-01.azurewebsites.net'
-    const ENDPOINT = BASE_URL + "/api/jobs/get-list"
+    const BASE_URL = import.meta.env.VITE_BASE_URL
+    const ENDPOINT = BASE_URL +  import.meta.env.VITE_GET_JOBS_ENDPOINT
     const {startLoading, stopLoading} = useContext(LoadingContext)
     const [jobs, setJobs] = useState([])
 
