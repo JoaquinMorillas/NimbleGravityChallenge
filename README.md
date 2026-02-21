@@ -12,7 +12,7 @@ Axios
 
 JavaScript (ES6+)
 
-HTML5 / CSS3
+BootStrap
 
 🚀 Getting Started
 1. Clone the repository
