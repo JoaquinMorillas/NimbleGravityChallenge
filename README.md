@@ -1,4 +1,4 @@
-Nimble Gravity Challenge
+# Nimble Gravity Challenge
 
 Small frontend project built with React + Vite that consumes an API using Axios and includes basic UI setup such as favicon configuration and public assets handling.
 
@@ -26,6 +26,10 @@ npm run dev
 The app will be available at:
 
 http://localhost:5173
+
+## Note
+for this sample the .env file is populated with dummy variables you should replace them with your own credentials
+---
 
 
 This project is intended as a lightweight coding challenge solution focusing on clean API consumption and simple frontend structure.
