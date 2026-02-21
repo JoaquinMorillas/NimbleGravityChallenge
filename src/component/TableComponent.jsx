@@ -9,6 +9,7 @@ export const TableComponent = ({ jobs }) => {
     const {startLoading, stopLoading} = useContext(LoadingContext)
     const myUuid = 'f5707469-ea8d-45de-9e86-143c47cb9d6f'
     const myCandidateId = '74114322005'
+    const myAplicationId = '77820939005'
     const [repoInputs, setRepoInputs] = useState({})
 
     const handleSubmit = async (job) => {
@@ -20,16 +21,17 @@ export const TableComponent = ({ jobs }) => {
             })
             return
         }
-        const jsonRequest = {
-            "uuid": myUuid,
-            "jobId": job.id,
-            "candidateId": myCandidateId,
-            "repoUrl": repoInputs[job.id]
-        }
 
         try{
             startLoading()
-            const request = await axios.post(ENDPOINT, {jsonRequest})
+            const request = await axios.post(ENDPOINT, 
+                {
+                    "uuid": myUuid,
+                    "jobId": job.id,
+                    "candidateId": myCandidateId,
+                    "repoUrl": repoInputs[job.id],
+                    applicationId: myAplicationId
+                })
             if(request.status == 200){
                 Swal.fire({
                     title:"Exito",
